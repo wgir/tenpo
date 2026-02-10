@@ -5,25 +5,16 @@ I have optimized the database queries in the `tenpo-backend` project to prevent 
 ## Changes Made
 
 ### 1. Optimized `TransactionRepository`
-Added `@EntityGraph` to all methods that fetch `Transaction` entities. This ensures the `Employee` relationship is fetched in the same query.
+Added `@EntityGraph` to all methods that fetch `Transaction` entities. This ensures the `Tenpista` relationship is fetched in the same query.
 
 [TransactionRepository.java](file:///c:/Users/Lenovo/Documents/Proyectos/tenpo/backend/src/main/java/com/tenpo/repository/TransactionRepository.java)
 ```java
-    @EntityGraph(attributePaths = {"employee"})
-    @Query("SELECT t FROM Transaction t WHERE t.employee.client.id = :clientId")
-    List<Transaction> findByClientId(@Param("clientId") Integer clientId);
+    @EntityGraph(attributePaths = {"tenpista"})
+    @Query("SELECT t FROM Transaction t WHERE t.tenpista.id = :tenpistaId")
+    List<Transaction> findByTenpistaId(@Param("tenpistaId") Integer tenpistaId);
 ```
 
-### 2. Optimized `EmployeeRepository`
-Added `@EntityGraph` to `findByRut` to eagerly fetch the associated `Client`.
-
-[EmployeeRepository.java](file:///c:/Users/Lenovo/Documents/Proyectos/tenpo/backend/src/main/java/com/tenpo/repository/EmployeeRepository.java)
-```java
-    @EntityGraph(attributePaths = {"client"})
-    Optional<Employee> findByRut(String rut);
-```
-
-### 3. Global Optimization in `application.yml`
+### 2. Global Optimization in `application.yml`
 Added `default_batch_fetch_size: 20` to Hibernate properties. This acts as a safety net, automatically batching queries for lazy relationships that weren't explicitly optimized with `@EntityGraph`.
 
 [application.yml](file:///c:/Users/Lenovo/Documents/Proyectos/tenpo/backend/src/main/resources/application.yml)
@@ -35,7 +26,7 @@ spring:
         default_batch_fetch_size: 20
 ```
 
-### 4. Comprehensive Testing Suite
+### 3. Comprehensive Testing Suite
 I have implemented a full suite of tests to ensure correctness and prevent regressions:
 - **CORS Configuration**: Allowed origin `http://localhost:5173` in `WebConfig.java` to support frontend integration.
 - **Unit Tests**: Coverage for all public methods in `TempistaService`, and `TransactionService`.
@@ -45,7 +36,7 @@ I have implemented a full suite of tests to ensure correctness and prevent regre
 ## Verification Results
 
 ### SQL Query Comparison (Verified)
-Using the Hibernate debug logs, I verified that `findByClientId` now executes a single `LEFT JOIN` query instead of multiple sequential selects.
+Using the Hibernate debug logs, I verified that `findByTenpistaId` now executes a single `LEFT JOIN` query instead of multiple sequential selects.
 
 ### Test Execution
 Successfully ran all **61 tests** (Web, Service, and Repository layers).

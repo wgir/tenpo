@@ -90,8 +90,7 @@ Requirements:
 
 Here is the repositories:
 
-ClientRepository
-EmployeeRepository
+TenpistaRepository
 TransactionRepository
 
 Generate only the test class.

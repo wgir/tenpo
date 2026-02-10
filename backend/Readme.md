@@ -1,6 +1,6 @@
 # Tenpo Backend API Challenge
 
-This is a RESTful API built with Java 21 and Spring Boot 3.4.1 to manage clients, employees, and transactions.
+This is a RESTful API built with Java 21 and Spring Boot 3.4.1 to manage tenpistas and transactions.
 
 ## Tech Stack
 - **Java 21**
@@ -54,26 +54,19 @@ Once the application is running, you can access:
 
 ## API Endpoints
 
-### Clients
-- `GET /client`: Get all clients.
-- `POST /client`: Create a new client.
-- `GET /client/{id}`: Get a client by ID.
-- `PUT /client/{id}`: Update a client.
-- `DELETE /client/{id}`: Delete a client.
-
-### Employees
-- `GET /employee`: Get all employees.
-- `POST /employee`: Create a new employee.
-- `GET /employee/{id}`: Get an employee by ID.
-- `PUT /employee/{id}`: Update an employee.
-- `DELETE /employee/{id}`: Delete an employee.
+### Tenpistas
+- `GET /tenpistas`: Get all tenpistas.
+- `POST /tenpistas`: Create a new tenpista.
+- `GET /tenpistas/{id}`: Get a tenpista by ID.
+- `PUT /tenpistas/{id}`: Update a tenpista.
+- `DELETE /tenpistas/{id}`: Delete a tenpista.
 
 ### Transactions
-- `GET /transaction`: Get all transactions.
-- `POST /transaction`: Create a new transaction.
-- `GET /transaction/{id}`: Get a transaction by ID.
-- `PUT /transaction/{id}`: Update a transaction.
-- `DELETE /transaction/{id}`: Delete a transaction.
+- `GET /transactions`: Get all transactions.
+- `POST /transactions`: Create a new transaction.
+- `GET /transactions/{id}`: Get a transaction by ID.
+- `PUT /transactions/{id}`: Update a transaction.
+- `DELETE /transactions/{id}`: Delete a transaction.
 
 ## Project Structure
 - `com.tenpo.api`: Controllers and DTOs.

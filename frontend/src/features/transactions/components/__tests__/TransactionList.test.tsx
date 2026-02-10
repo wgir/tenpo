@@ -1,12 +1,34 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { TransactionList } from '../TransactionList';
 import type { Transaction } from '../../types/transaction.types';
+import { useTenpistas } from '../../../tenpistas/hooks/useTenpistas';
+
+vi.mock('../../../tenpistas/hooks/useTenpistas', () => ({
+    useTenpistas: vi.fn(),
+}));
 
 describe('TransactionList Component', () => {
     const mockOnEdit = vi.fn();
     const mockOnDelete = vi.fn();
-    const mockOnDismissError = vi.fn();
+
+    beforeEach(() => {
+        vi.mocked(useTenpistas).mockReturnValue({
+            tenpistas: [
+                { id: 1, name: 'Tenpista A', rut: '123-1' },
+                { id: 2, name: 'Tenpista B', rut: '123-2' },
+            ],
+            isLoading: false,
+            isError: false,
+            error: null,
+            createTenpista: vi.fn(),
+            isCreating: false,
+            updateTenpista: vi.fn(),
+            isUpdating: false,
+            deleteTenpista: vi.fn(),
+            isDeleting: false,
+        });
+    });
 
     const mockTransactions: Transaction[] = [
         {
@@ -60,9 +82,9 @@ describe('TransactionList Component', () => {
                 onDelete={mockOnDelete}
             />
         );
-        expect(screen.getByText('Tenpista A')).toBeDefined();
+        expect(screen.getAllByText('Tenpista A').length).toBeGreaterThan(0);
         expect(screen.getByText('Store A')).toBeDefined();
-        expect(screen.getByText('Tenpista B')).toBeDefined();
+        expect(screen.getAllByText('Tenpista B').length).toBeGreaterThan(0);
         expect(screen.getByText('Store B')).toBeDefined();
     });
 
@@ -76,7 +98,6 @@ describe('TransactionList Component', () => {
         );
         // Find edit button (assuming first one)
         const editButtons = screen.getAllByRole('button');
-        const editButton = editButtons.find(btn => btn.querySelector('svg.lucide-edit-2'));
         // Or find based on class if needed, or aria-label if we added one (we should add aria-label)
         // For now, let's rely on the svg presence or mock details
         // Wait, the previous test code used:

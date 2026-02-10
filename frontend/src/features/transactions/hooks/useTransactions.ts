@@ -8,7 +8,11 @@ export const useTransactions = () => {
     const transactionsQuery = useQuery({
         queryKey: ['transactions'],
         queryFn: transactionsApi.getAll,
-        select: (data) => [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
+        select: (data) => [...data].sort((a, b) => {
+            const nameCompare = a.tenpista_name.localeCompare(b.tenpista_name);
+            if (nameCompare !== 0) return nameCompare;
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }),
     });
 
     const createTransactionMutation = useMutation({

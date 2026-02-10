@@ -1,0 +1,3 @@
+Buid a react vite frontend app taking as reference the file docs/requirements.md and following the rules defined in docs/rules.md and docs/tailwind.md
+
+Instead of managing clients, employees and transactions on dashsboard page, create a page for each entity and implement react routes to navigate between them. Also create a page for the dashboard that shows a summary of all entities and create side bar to navigate between them.

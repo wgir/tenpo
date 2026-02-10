@@ -1,0 +1,43 @@
+name: tenpo-app
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: tenpo-db
+    environment:
+      POSTGRES_DB: tenpo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d tenpo" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    container_name: tenpo-api
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tenpo
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_FLYWAY_BASELINE_ON_MIGRATE=true
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tenpo-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
